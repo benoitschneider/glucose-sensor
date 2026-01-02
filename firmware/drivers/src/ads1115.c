@@ -106,19 +106,9 @@ ads1115_ret_code_t ads1115_read_raw_data(
     ads1115_ret_code_t err_code;
 
     // 1. Read current config to preserve settings (gain, rate, etc.)
-    err_code = ads1115_read_read_register(i2c_address, ADS1115_REG_POINTER_CONFIG, &config_reg);
+    err_code = ads1115_read_register(i2c_address, ADS1115_REG_POINTER_CONFIG, &config_reg);
     if (err_code != ADS1115_OK) {
         return err_code;
-    }
-
-    // Check if a conversion is already in progress (OS bit is 0)
-    if (!(config_reg & ADS1115_CONFIG_OS_SINGLE_START)) {
-        // If OS bit is 0, a conversion is in progress or completed. If completed, we can read it.
-        // If we want to start a *new* conversion, we need to ensure it's not busy.
-        // For single-shot mode, OS=0 means conversion is complete and data is ready.
-        // If we want to force a new conversion, we should set OS=1.
-        // The current implementation sets OS=1 to start a new conversion.
-        // If OS is already 0, it implies a previous conversion finished. We'll proceed to start a new one.
     }
 
     // Ensure it's in single-shot mode (MODE bit 8 set to 1)
