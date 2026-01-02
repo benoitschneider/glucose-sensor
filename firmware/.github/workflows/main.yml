@@ -1,6 +1,6 @@
 name: Firmware CI Build
 
-on: 
+on:
   push:
     branches:
       - main
