@@ -7,7 +7,7 @@ static void ads1115_delay_ms(uint32_t ms)
 {
     // Placeholder: In a real system, use a timer-based delay or OS delay.
     // For now, a busy-wait loop for simulation.
-    volatile uint33_t i, j;
+    volatile uint32_t i, j;
     for (i = 0; i < ms; i++) {
         for (j = 0; j < 10000; j++); // Adjust for your clock speed
     }
@@ -60,16 +60,16 @@ static ads1115_ret_code_t ads1115_read_register(uint8_t i2c_address, uint8_t reg
 
 ads1115_ret_code_t ads1115_init(
     uint8_t i2c_address,
-    ads1115_pga_t pga,
-    ads1115_data_rate_t data_rate,
-    ads1115_mux_t mux)
+    ads1115_gain_t gain_setting,
+    ads1115_sampling_rate_t rate_setting,
+    ads1115_mux_t channel_cfg)
 {
     // Default configuration: Single-shot, Power-down mode, Comparator disabled
     uint16_t config = ADS1115_CONFIG_OS_NO_EFFECT | // Don't start conversion yet
-                      mux |
-                      pga |
+                      channel_cfg |
+                      gain_setting |
                       ADS1115_CONFIG_MODE_SINGLE |
-                      data_rate |
+                      rate_setting |
                       ADS1115_CONFIG_COMP_QUE_DISABLE; // Disable comparator
 
     return ads1115_write_register(i2c_address, ADS1115_REG_POINTER_CONFIG, config);
