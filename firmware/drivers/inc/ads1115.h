@@ -41,7 +41,7 @@ typedef enum {
     ADS1115_PGA_1_024V = (3 << 9), // +/- 1.024V
     ADS1115_PGA_0_512V = (4 << 9), // +/- 0.512V
     ADS1115_PGA_0_256V = (5 << 9)  // +/- 0.256V
-} ads1115_pga_t;
+} ads1115_gain_t;
 
 // MODE: Device Operating Mode
 #define ADS1115_CONFIG_MODE_CONTINUOUS  (0 << 8)
@@ -57,7 +57,7 @@ typedef enum {
     ADS1115_DR_250SPS = (5 << 5),
     ADS1115_DR_475SPS = (6 << 5),
     ADS1115_DR_860SPS = (7 << 5)
-} ads1115_data_rate_t;
+} ads1115_sampling_rate_t;
 
 // COMP_MODE: Comparator Mode
 #define ADS1115_CONFIG_COMP_MODE_TRADITIONAL (0 << 4)
@@ -82,23 +82,24 @@ typedef enum {
     ADS1115_OK = 0,
     ADS1115_ERR_I2C,
     ADS1115_ERR_TIMEOUT,
-    ADS1115_ERR_INVALID_PARAM
+    ADS1115_ERR_INVALID_PARAM,
+    ADS1115_ERR_NOT_INITIALIZED
 } ads1115_ret_code_t;
 
 /**
  * @brief Initializes the ADS1115 ADC with specified gain, sampling rate, and channel configuration.
  *        This function writes the configuration register.
  * @param i2c_address The 7-bit I2C address of the ADS1115 (e.g., ADS1115_ADDRESS_GND).
- * @param pga The Programmable Gain Amplifier setting.
- * @param data_rate The data rate (samples per second).
- * @param mux The input multiplexer configuration (channel selection).
+ * @param gain_setting The Programmable Gain Amplifier setting.
+ * @param rate_setting The data rate (samples per second).
+ * @param channel_cfg The input multiplexer configuration (channel selection).
  * @return ADS1115_OK on success, otherwise an error code.
  */
 ads1115_ret_code_t ads1115_init(
     uint8_t i2c_address,
-    ads1115_pga_t pga,
-    ads1115_data_rate_t data_rate,
-    ads1115_mux_t mux
+    ads1115_gain_t gain_setting,
+    ads1115_sampling_rate_t rate_setting,
+    ads1115_mux_t channel_cfg
 );
 
 /**
