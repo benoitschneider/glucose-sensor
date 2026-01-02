@@ -2,7 +2,7 @@
 
 ## Build Instructions
 
-No direct changes to local build instructions. The GitHub Actions workflow automates the build process in a CI/CD environment.
+No changes to build instructions, as the build process itself remains the same; only the location of the CI workflow file has changed.
 
 ## Dependencies
 
