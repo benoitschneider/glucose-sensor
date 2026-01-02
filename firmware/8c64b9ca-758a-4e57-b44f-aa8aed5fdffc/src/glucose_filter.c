@@ -51,18 +51,18 @@ static void GlucoseFilter_CalculateCoefficients(float alpha) {
  * @param raw_glucose The current raw glucose reading.
  * @return The smoothed glucose reading.
  */
-static float GlucoseFilter_ProcessEMA(float raw_glucose) {
+static float GlucoseFilter_ProcessEMA(float *raw_glucose) {
     // Convert raw input to Q15
-    int16_t x_n_q15 = FLOAT_TO_Q15(raw_glucose);
+    int16_t x_n_q15 = FLOAT_TO_Q15(*raw_glucose);
 
     // Get alpha from the stored float parameter
     float alpha = glucoseFilterState.parameter_float;
 
     // Handle initial state for EMA
-    if (glucoseFilterState.ema_prev_output_q15 == 0 && raw_glucose != 0.0f) {
+    if (glucoseFilterState.ema_prev_output_q15 == 0 && *raw_glucose != 0.0f) {
         // If first non-zero reading, initialize filter with it
         glucoseFilterState.ema_prev_output_q15 = x_n_q15;
-        return raw_glucose;
+        return *raw_glucose;
     }
 
     // EMA formula: y[n] = alpha * x[n] + (1 - alpha) * y[n-1]
